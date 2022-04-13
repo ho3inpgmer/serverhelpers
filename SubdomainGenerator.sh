@@ -24,15 +24,13 @@ cat > $NGINX_AVAILABLE_VHOSTS/$1 <<EOF
 server {
     # Just the server name
     server_name $1.$2;
-    root        $WEB_DIR/$1/public_html;
+    
+    root        $WEB_DIR/$1.$2/public_html;
+    
     # Logs
-    access_log $WEB_DIR/$1/logs/access.log;
-    error_log  $WEB_DIR/$1/logs/error.log;
-    # Includes
-    # include global/common.conf;
-    # Listen to port 8080, cause of Varnis
-    # Must be defined after the common.conf include
-    #listen 127.0.0.1:8080;
+    access_log $WEB_DIR/$1.$2/logs/access.log;
+    error_log  $WEB_DIR/$1.$2/logs/error.log;
+    
 }
 EOF
 
@@ -71,4 +69,4 @@ then
   /etc/init.d/nginx restart;
 fi
 
-ok "Subdomain is created for $1."
+ok "Subdomain is created for $1.$2"
