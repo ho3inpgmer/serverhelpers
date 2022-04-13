@@ -35,7 +35,7 @@ server {
 EOF
 
 # Create {public,log} directories.
-mkdir -p $WEB_DIR/$1/{public_html,logs}
+mkdir -p $WEB_DIR/$1.$2/{public_html,logs}
 
 # Create index.html file.
 cat > $WEB_DIR/$1/public_html/index.html <<EOF
