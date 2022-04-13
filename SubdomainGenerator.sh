@@ -57,10 +57,10 @@ cat > $WEB_DIR/$1/public_html/index.html <<EOF
 EOF
 
 # Change the folder permissions.
-chown -R $USER:$WEB_USER $WEB_DIR/$1
+chown -R $USER:$WEB_USER $WEB_DIR/$1.$2
 
 # Enable site by creating symbolic link.
-ln -s $NGINX_AVAILABLE_VHOSTS/$1 $NGINX_ENABLED_VHOSTS/$1
+ln -s $NGINX_AVAILABLE_VHOSTS/$1.$2 $NGINX_ENABLED_VHOSTS/$1.$2
 
 # Restart the Nginx server.
 read -p "A restart to Nginx is required for the subdomain to be defined. Do you wish to restart nginx? (y/n): " prompt
