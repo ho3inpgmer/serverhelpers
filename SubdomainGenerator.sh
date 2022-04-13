@@ -20,7 +20,7 @@ NGINX_REQUEST_URI='$request_uri'
 ok "Creating the config files for your subdomain."
 
 # Create the Nginx config file.
-cat > $NGINX_AVAILABLE_VHOSTS/$1 <<EOF
+cat > $NGINX_AVAILABLE_VHOSTS/$1.$2 <<EOF
 server {
     # Just the server name
     server_name $1.$2;
@@ -38,7 +38,7 @@ EOF
 mkdir -p $WEB_DIR/$1.$2/{public_html,logs}
 
 # Create index.html file.
-cat > $WEB_DIR/$1/public_html/index.html <<EOF
+cat > $WEB_DIR/$1.$2/public_html/index.html <<EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
