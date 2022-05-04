@@ -1,0 +1,39 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8000:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    networks:
+      - mysql-net
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '${FORWARD_REDIS_PORT:-5632}:6379'
+    volumes:
+      - 'sail-redis:/data'
+    healthcheck:
+      test:
+        - CMD
+        - redis-cli
+        - ping
+      retries: 3
+      timeout: 5s
+    networks:
+      - mysql-net
+volumes:
+  sail-mysql:
+    driver: local
+  sail-redis:
+    driver: local
+networks:
+  mysql-net:
+    external: true
+    name: mysql-net
