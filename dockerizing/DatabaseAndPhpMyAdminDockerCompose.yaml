@@ -1,0 +1,46 @@
+version: "2.1"
+# Creates MariaDB container and phpMyAdmin service to manage it
+services:
+  db:
+    image: mariadb:latest
+    container_name: db
+    hostname: db
+    restart: always
+    networks:
+      - mysql-net
+    environment:
+      MYSQL_ROOT_PASSWORD: dbrootpassword
+    volumes:
+      # Will use db volume and inside to path /var/lib/mysql
+      - db:/var/lib/mysql
+
+  phpmyadmin:
+    # Depends on only works within same stack, but not between remote containers (even on user-defined network)
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    networks:
+      - mysql-net
+    container_name: phpmyadmin
+    hostname: phpmyadmin
+    ports:
+      # Exposes external port 7000 mapped to internal of 80
+      # Database required no external port of its own
+      - 7000:80
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: dbrootpassword
+      # Variable to increase upload limit for importing sql db files
+      UPLOAD_LIMIT: 200000K
+
+volumes:
+  # Creates persistent storage volume for database
+  # Specify name so it does not append stack name in front
+  db:
+    name: db
+networks:
+  # This will create a user-defined network with name of mysql-net
+  # Specify name so that it does not append stack name and become db_mysql-net
+  mysql-net:
+    name: mysql-net
